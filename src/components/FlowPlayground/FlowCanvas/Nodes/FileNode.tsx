@@ -1,11 +1,17 @@
 import { ChangeEventHandler, ElementRef, useRef } from "react";
-import { OperationNodes } from "../../../../utils/types";
-import { NodeWrapper } from "../NodeWrapper";
-import { csvToJson } from "../../../../utils/csvToJson";
-import { setFileData } from "../../../../store/workFlowSlice";
+import { Position } from "reactflow";
 import { useAppDispatch } from "../../../../store";
+import { addFileData } from "../../../../store/workFlowSlice";
+import { csvToJson } from "../../../../utils/csvToJson";
+import { OperationNodes } from "../../../../utils/types";
+import { CustomConnect } from "../CustomConnect";
+import { NodeWrapper } from "../NodeWrapper";
 
-export const FileNode = () => {
+type PropsType = {
+  id: string;
+};
+
+export const FileNode = ({ id }: PropsType) => {
   const fileInputRef = useRef<ElementRef<"input">>(null);
   const detailsRef = useRef<ElementRef<"div">>(null);
 
@@ -30,7 +36,7 @@ export const FileNode = () => {
         if (file.type === "text/csv") {
           obj = csvToJson(String(data));
           console.log(obj);
-          dispatch(setFileData(obj));
+          dispatch(addFileData({ id, fileData: obj }));
           if (detailsRef.current) {
             detailsRef.current.innerHTML =
               obj === null
@@ -77,6 +83,12 @@ export const FileNode = () => {
           Allowed types: csv
         </div>
       </div>
+      <CustomConnect
+        accepted={[OperationNodes.FILTER_NODE]}
+        type="source"
+        position={Position.Right}
+        id={id}
+      />
       <div
         ref={detailsRef}
         className="absolute text-[8px] z-10 mt-3 text-white text-opacity-50"

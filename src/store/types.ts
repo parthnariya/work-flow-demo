@@ -1,4 +1,4 @@
-import { Edge, Node } from "reactflow";
+import { Edge, Node, NodeChange } from "reactflow";
 import { OperationNodes } from "../utils/types";
 
 export type FileData = Record<string, string>[];
@@ -16,4 +16,8 @@ export type AddNodePayloadType = {
 export type AddFileDataPayloadType = {
   id: string;
   fileData: FileData | null;
+};
+
+export type OnNodeChangePayloadType = {
+  changes: NodeChange[];
 };

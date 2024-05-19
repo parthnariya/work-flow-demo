@@ -1,12 +1,29 @@
-import ReactFlow, { Background, Controls, MiniMap } from "reactflow";
+import ReactFlow, {
+  Background,
+  Controls,
+  MiniMap,
+  OnNodesChange,
+} from "reactflow";
 import "reactflow/dist/style.css";
 import { miniMapStyle, nodeTypes } from "./utils";
-import { useAppSelector } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { onNodeChange } from "../../../store/workFlowSlice";
 export const FlowCanvas = () => {
   const { nodes } = useAppSelector((state) => state.workFlow);
+  const dispatch = useAppDispatch();
+
+  const onNodeChangeHandler: OnNodesChange = (changes) => {
+    dispatch(onNodeChange({ changes }));
+  };
+
   return (
     <div className="flex-[0.85] flex h-full w-full relative text-xs">
-      <ReactFlow fitView nodes={nodes} nodeTypes={nodeTypes}>
+      <ReactFlow
+        fitView
+        nodes={nodes}
+        nodeTypes={nodeTypes}
+        onNodesChange={onNodeChangeHandler}
+      >
         <MiniMap
           style={miniMapStyle}
           zoomable

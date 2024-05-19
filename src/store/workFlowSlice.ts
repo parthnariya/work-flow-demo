@@ -4,8 +4,10 @@ import {
   AddFileDataPayloadType,
   AddNodePayloadType,
   FileData,
+  OnNodeChangePayloadType,
   WorkFlowState,
 } from "./types";
+import { applyNodeChanges } from "reactflow";
 
 const initialState: WorkFlowState = {
   edges: [],
@@ -51,8 +53,17 @@ const workFlowSlice = createSlice({
 
       state.fileData = fileData;
     },
+    onNodeChange: (
+      state,
+      { payload }: PayloadAction<OnNodeChangePayloadType>
+    ) => {
+      const { changes } = payload;
+      const nodes = state.nodes;
+      state.nodes = applyNodeChanges(changes, nodes);
+    },
   },
 });
 
-export const { setFileData, addNode } = workFlowSlice.actions;
+export const { setFileData, addNode, addFileData, onNodeChange } =
+  workFlowSlice.actions;
 export default workFlowSlice.reducer;
