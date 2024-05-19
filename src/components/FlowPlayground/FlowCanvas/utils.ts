@@ -9,4 +9,5 @@ export const miniMapStyle: CSSProperties = {
 
 export const nodeTypes: Record<OperationNodes, () => JSX.Element> = {
   FILE_NODE: FileNode,
+  EXAMPLE_NODE: () => {},
 };
