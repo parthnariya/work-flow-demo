@@ -1,15 +1,26 @@
-export const Select = () => {
+type PropsType = React.SelectHTMLAttributes<HTMLSelectElement> & {
+  label: string;
+  options: {
+    label: string;
+    value: string;
+  }[];
+};
+export const Select = (props: PropsType) => {
   return (
     <div>
       <label className="block mb-2 text-xs font-medium text-gray-900">
-        Select an option
+        {props.label}
       </label>
-      <select className="bg-primary-light border border-primary-dark text-white text-xs rounded-lg block w-full p-1">
-        <option selected>Choose a country</option>
-        <option value="US">United States</option>
-        <option value="CA">Canada</option>
-        <option value="FR">France</option>
-        <option value="DE">Germany</option>
+      <select
+        {...props}
+        className="nodrag bg-primary-light border border-primary-dark text-white text-xs rounded-lg block w-full p-1"
+        value={props.value}
+      >
+        {props.options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
     </div>
   );

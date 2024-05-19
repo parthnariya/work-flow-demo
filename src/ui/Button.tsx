@@ -1,11 +1,14 @@
-type PropsType = {
+type PropsType = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   label: string;
 };
 
-export const Button = ({ label }: PropsType) => {
+export const Button = (props: PropsType) => {
   return (
-    <button className="rounded bg-primary-dark/60 p-1.5 px-2.5 self-end mt-2 hover:bg-primary-light">
-      {label}
+    <button
+      {...props}
+      className="rounded bg-primary-dark/60 p-1.5 px-2.5 self-end mt-1 hover:bg-primary-light"
+    >
+      {props.label}
     </button>
   );
 };

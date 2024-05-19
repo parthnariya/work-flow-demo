@@ -1,5 +1,8 @@
-export const Input = () => {
+export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
-    <input className="w-full p-1 outline-none bg-primary-light border border-primary-dark rounded-lg block" />
+    <input
+      {...props}
+      className="w-full p-1 outline-none bg-primary-light border border-primary-dark rounded-lg block"
+    />
   );
 };

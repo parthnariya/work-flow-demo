@@ -1,13 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { OperationNodes } from "../utils/types";
+import { FilterBlockData, OperationNodes } from "../utils/types";
 import {
   AddFileDataPayloadType,
   AddNodePayloadType,
   FileData,
+  OnConnectPayloadType,
   OnNodeChangePayloadType,
+  UpdateFilterPayloadType,
   WorkFlowState,
 } from "./types";
-import { applyNodeChanges } from "reactflow";
+import { addEdge, applyNodeChanges } from "reactflow";
 
 const initialState: WorkFlowState = {
   edges: [],
@@ -34,7 +36,7 @@ const workFlowSlice = createSlice({
           };
           break;
         case OperationNodes.FILTER_NODE:
-          data = {
+          data = <FilterBlockData>{
             condition: null,
             column: null,
           };
@@ -67,9 +69,70 @@ const workFlowSlice = createSlice({
       const nodes = state.nodes;
       state.nodes = applyNodeChanges(changes, nodes);
     },
+    updateFilter: (
+      state,
+      { payload }: PayloadAction<UpdateFilterPayloadType>
+    ) => {
+      const { data, id } = payload;
+      const targetNode = state.nodes.find((node) => node.id === id);
+
+      if (!targetNode || targetNode.type !== OperationNodes.FILTER_NODE) {
+        return;
+      }
+
+      state.nodes = state.nodes.map((node) =>
+        node.id === id ? { ...node, data: { ...node.data, data } } : node
+      );
+    },
+    onConnect: (state, { payload }: PayloadAction<OnConnectPayloadType>) => {
+      const { connection } = payload;
+      const id = connection.source;
+      const sourceNode = state.nodes.find((node) => node.id == id);
+
+      if (!sourceNode) return;
+
+      if (sourceNode.type === OperationNodes.FILE_NODE) {
+        const connectedNode = state.nodes.find(
+          (node) => node.id === connection.target
+        );
+        if (connectedNode?.type === OperationNodes.FILTER_NODE) {
+          const dataset = sourceNode.data.fileData || [];
+          const columns = Object.keys(dataset.length ? dataset[0] : []);
+          const columnsOptions = columns.map((column) => ({
+            value: column,
+            label: column,
+          }));
+
+          const updatedNodes = state.nodes.map((node) =>
+            node.id === connectedNode.id
+              ? {
+                  ...node,
+                  data: {
+                    column: columnsOptions,
+                    selectedColumn: columnsOptions.length
+                      ? columnsOptions[0]?.value
+                      : null,
+                    condition: null,
+                    datasource: dataset,
+                  },
+                }
+              : node
+          );
+          state.nodes = updatedNodes;
+        }
+      }
+      const updatedEdges = addEdge(connection, state.edges);
+      state.edges = updatedEdges;
+    },
   },
 });
 
-export const { setFileData, addNode, addFileData, onNodeChange } =
-  workFlowSlice.actions;
+export const {
+  setFileData,
+  addNode,
+  addFileData,
+  onNodeChange,
+  updateFilter,
+  onConnect,
+} = workFlowSlice.actions;
 export default workFlowSlice.reducer;
