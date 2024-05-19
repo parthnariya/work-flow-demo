@@ -21,7 +21,7 @@ const workFlowSlice = createSlice({
   name: "workFlowSlice",
   initialState,
   reducers: {
-    setFileData: (state, { payload }: PayloadAction<FileData>) => {
+    setFileData: (state, { payload }: PayloadAction<FileData | null>) => {
       state.fileData = payload;
     },
     addNode: (state, { payload }: PayloadAction<AddNodePayloadType>) => {

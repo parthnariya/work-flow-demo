@@ -1,9 +1,24 @@
-import { useAppSelector } from "../../store";
+import { useOnSelectionChange } from "reactflow";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { setFileData } from "../../store/workFlowSlice";
 import { TableHeader } from "./TableHeader";
 import { TableRow } from "./TableRow";
 
 export const OutputTable = () => {
   const { fileData } = useAppSelector((state) => state.workFlow);
+
+  const dispatch = useAppDispatch();
+
+  useOnSelectionChange({
+    onChange: ({ nodes }) => {
+      if (nodes[0].data.fileData) {
+        dispatch(setFileData(nodes[0].data.fileData));
+      } else {
+        dispatch(setFileData(null));
+      }
+    },
+  });
+
   if (!fileData)
     return (
       <div className="h-full border-t flex flex-col text-xs border-primary-dark">

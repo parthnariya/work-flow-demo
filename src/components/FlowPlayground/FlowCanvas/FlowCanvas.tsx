@@ -6,13 +6,12 @@ import ReactFlow, {
   OnNodesChange,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import { miniMapStyle, nodeTypes } from "./utils";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { onConnect, onNodeChange } from "../../../store/workFlowSlice";
+import { miniMapStyle, nodeTypes } from "./utils";
 export const FlowCanvas = () => {
   const { nodes, edges } = useAppSelector((state) => state.workFlow);
   const dispatch = useAppDispatch();
-
   const onNodeChangeHandler: OnNodesChange = (changes) => {
     dispatch(onNodeChange({ changes }));
   };

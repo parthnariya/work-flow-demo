@@ -1,3 +1,5 @@
+import { FileData } from "../store/types";
+
 export const filterOption = [
   {
     value: "",
@@ -20,3 +22,38 @@ export const filterOption = [
     label: "text does not includes",
   },
 ];
+
+export const filterFunction = (
+  fileData: FileData,
+  selectedColumn: string,
+  condition: string,
+  value: string
+) => {
+  let result = fileData;
+  switch (condition) {
+    case "1":
+      result = fileData.filter(
+        (column) => String(column[selectedColumn]) === value
+      );
+      break;
+
+    case "2":
+      result = fileData.filter(
+        (column) => String(column[selectedColumn]) !== value
+      );
+      break;
+
+    case "3":
+      result = fileData.filter((column) =>
+        String(column[selectedColumn]).includes(value)
+      );
+      break;
+
+    case "4":
+      result = fileData.filter((column) =>
+        !String(column[selectedColumn]).includes(value)
+      );
+      break;
+  }
+  return result;
+};
