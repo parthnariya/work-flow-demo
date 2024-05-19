@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { FileData, WorkFlowState } from "./types";
+import { OperationNodes } from "../utils/types";
+import { AddNodePayloadType, FileData, WorkFlowState } from "./types";
 
 const initialState: WorkFlowState = {
   edges: [],
@@ -14,8 +15,22 @@ const workFlowSlice = createSlice({
     setFileData: (state, { payload }: PayloadAction<FileData>) => {
       state.fileData = payload;
     },
+    addNode: (state, { payload }: PayloadAction<AddNodePayloadType>) => {
+      const id = Date.now().toString();
+      const position = { x: -240, y: 400 };
+      const type = payload.type;
+      let data = {};
+      switch (type) {
+        case OperationNodes.FILE_NODE:
+          data = {
+            fileData: null,
+          };
+          break;
+      }
+      state.nodes = [...state.nodes, { id, position, data, type }];
+    },
   },
 });
 
-export const { setFileData } = workFlowSlice.actions;
+export const { setFileData, addNode } = workFlowSlice.actions;
 export default workFlowSlice.reducer;
