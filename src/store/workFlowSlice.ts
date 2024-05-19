@@ -1,11 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { OperationNodes } from "../utils/types";
-import { AddNodePayloadType, FileData, WorkFlowState } from "./types";
+import {
+  AddFileDataPayloadType,
+  AddNodePayloadType,
+  FileData,
+  WorkFlowState,
+} from "./types";
 
 const initialState: WorkFlowState = {
   edges: [],
   nodes: [],
-  fileData: [],
+  fileData: null,
 };
 
 const workFlowSlice = createSlice({
@@ -28,6 +33,23 @@ const workFlowSlice = createSlice({
           break;
       }
       state.nodes = [...state.nodes, { id, position, data, type }];
+    },
+    addFileData: (
+      state,
+      { payload }: PayloadAction<AddFileDataPayloadType>
+    ) => {
+      const { fileData, id } = payload;
+      const targetNode = state.nodes.find((node) => node.id === id);
+
+      if (!targetNode || targetNode.type !== OperationNodes.FILE_NODE) {
+        return;
+      }
+
+      state.nodes = state.nodes.map((node) =>
+        node.id === id ? { ...node, data: { ...node.data, fileData } } : node
+      );
+
+      state.fileData = fileData;
     },
   },
 });
