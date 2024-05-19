@@ -33,6 +33,12 @@ const workFlowSlice = createSlice({
             fileData: null,
           };
           break;
+        case OperationNodes.FILTER_NODE:
+          data = {
+            condition: null,
+            column: null,
+          };
+          break;
       }
       state.nodes = [...state.nodes, { id, position, data, type }];
     },

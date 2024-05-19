@@ -1,6 +1,6 @@
 import { useAppDispatch } from "../../../store";
 import { addNode } from "../../../store/workFlowSlice";
-import { OperationNodes } from "../../../utils/types";
+import { OperationFunctions, OperationNodes } from "../../../utils/types";
 import { SidebarMenuType } from "./type";
 
 type PropType = {
@@ -10,9 +10,15 @@ type PropType = {
 export const SidebarItem = ({ item }: PropType) => {
   const dispatch = useAppDispatch();
 
-  const onAddNodeHandler = () => {
-    console.log("hello");
-    dispatch(addNode({ type: OperationNodes.FILE_NODE }));
+  const onAddNodeHandler = (functionName: OperationFunctions) => {
+    switch (functionName) {
+      case OperationFunctions.ADD_FILE:
+        dispatch(addNode({ type: OperationNodes.FILE_NODE }));
+        break;
+      case OperationFunctions.ADD_FILTER:
+        dispatch(addNode({ type: OperationNodes.FILTER_NODE }));
+        break;
+    }
   };
   return (
     <div className="p-2 overflow-auto">
@@ -21,7 +27,7 @@ export const SidebarItem = ({ item }: PropType) => {
         <div
           className="block-type shadow-md p-3 mb-3 rounded-md bg-primary-dark flex flex-col gap-2"
           key={detail.functionName}
-          onClick={onAddNodeHandler}
+          onClick={() => onAddNodeHandler(detail.functionName)}
         >
           <div className="font-bold capitalize text-[14px] select-none">
             {detail.label}
