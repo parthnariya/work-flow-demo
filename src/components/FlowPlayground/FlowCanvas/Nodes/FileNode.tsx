@@ -2,10 +2,14 @@ import { ChangeEventHandler, ElementRef, useRef } from "react";
 import { OperationNodes } from "../../../../utils/types";
 import { NodeWrapper } from "../NodeWrapper";
 import { csvToJson } from "../../../../utils/csvToJson";
+import { setFileData } from "../../../../store/workFlowSlice";
+import { useAppDispatch } from "../../../../store";
 
 export const FileNode = () => {
   const fileInputRef = useRef<ElementRef<"input">>(null);
   const detailsRef = useRef<ElementRef<"div">>(null);
+
+  const dispatch = useAppDispatch();
 
   const onClickHandler = () => {
     fileInputRef.current?.click();
@@ -14,7 +18,7 @@ export const FileNode = () => {
   const onFileChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
 
-    if (!e.target.files || e.target.files[0].size > 0) return null;
+    if (!e.target.files || e.target.files[0].size <= 0) return null;
 
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -25,7 +29,8 @@ export const FileNode = () => {
 
         if (file.type === "text/csv") {
           obj = csvToJson(String(data));
-          // console.log(obj);
+          console.log(obj);
+          dispatch(setFileData(obj));
           if (detailsRef.current) {
             detailsRef.current.innerHTML =
               obj === null
