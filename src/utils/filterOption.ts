@@ -50,10 +50,11 @@ export const filterFunction = (
       break;
 
     case "4":
-      result = fileData.filter((column) =>
-        !String(column[selectedColumn]).includes(value)
+      result = fileData.filter(
+        (column) => !String(column[selectedColumn]).includes(value)
       );
       break;
   }
+  console.log(result);
   return result;
 };

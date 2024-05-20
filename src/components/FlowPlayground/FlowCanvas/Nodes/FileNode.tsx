@@ -9,9 +9,10 @@ import { NodeWrapper } from "../NodeWrapper";
 
 type PropsType = {
   id: string;
+  data: any;
 };
 
-export const FileNode = ({ id }: PropsType) => {
+export const FileNode = ({ id, data }: PropsType) => {
   const fileInputRef = useRef<ElementRef<"input">>(null);
   const detailsRef = useRef<ElementRef<"div">>(null);
 

@@ -22,6 +22,7 @@ const workFlowSlice = createSlice({
   initialState,
   reducers: {
     setFileData: (state, { payload }: PayloadAction<FileData | null>) => {
+      console.log(payload);
       state.fileData = payload;
     },
     addNode: (state, { payload }: PayloadAction<AddNodePayloadType>) => {
@@ -39,6 +40,7 @@ const workFlowSlice = createSlice({
           data = <FilterBlockData>{
             condition: null,
             column: null,
+            fileData: null,
           };
           break;
       }
@@ -80,9 +82,13 @@ const workFlowSlice = createSlice({
         return;
       }
 
-      state.nodes = state.nodes.map((node) =>
-        node.id === id ? { ...node, data: { ...node.data, data } } : node
+      const updatedNodes = state.nodes.map((node) =>
+        node.id === id ? { ...node, data } : node
       );
+      state.nodes = updatedNodes;
+      if (payload.data.fileData) {
+        state.fileData = payload.data.fileData;
+      }
     },
     onConnect: (state, { payload }: PayloadAction<OnConnectPayloadType>) => {
       const { connection } = payload;
@@ -95,7 +101,8 @@ const workFlowSlice = createSlice({
         const connectedNode = state.nodes.find(
           (node) => node.id === connection.target
         );
-        if (connectedNode?.type === OperationNodes.FILTER_NODE) {
+        if (!connectedNode) return;
+        if (connectedNode.type === OperationNodes.FILTER_NODE) {
           const dataset = sourceNode.data.fileData || [];
           const columns = Object.keys(dataset.length ? dataset[0] : []);
           const columnsOptions = columns.map((column) => ({
@@ -110,10 +117,11 @@ const workFlowSlice = createSlice({
                   data: {
                     column: columnsOptions,
                     selectedColumn: columnsOptions.length
-                      ? columnsOptions[0]?.value
+                      ? columnsOptions[0].value
                       : null,
                     condition: null,
                     datasource: dataset,
+                    fileData: null,
                   },
                 }
               : node

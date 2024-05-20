@@ -14,7 +14,7 @@ import { selectorFunction } from "./utils";
 import { useMemo } from "react";
 
 type PropTypes = HandleProps & {
-  connectionLimit?:
+  connectionlimit?:
     | number
     | ((obj: { node: Node; connectedEdges: Edge[] }) => boolean);
   accepted?: OperationNodes[];
@@ -27,7 +27,7 @@ export const CustomConnect = (props: PropTypes) => {
   const nodes = useNodes();
 
   const isHandleConnectable = useMemo(() => {
-    if (typeof props.connectionLimit === "number") {
+    if (typeof props.connectionlimit === "number") {
       const node = nodeInternals.get(nodeId);
       if (!node) return true;
 
@@ -38,17 +38,17 @@ export const CustomConnect = (props: PropTypes) => {
       connectedEdges.forEach((edge) => {
         countTypeLength += edge[props.type] == props.id ? 1 : 0;
       });
-      return countTypeLength < props.connectionLimit;
+      return countTypeLength < props.connectionlimit;
     }
 
-    if (typeof props.connectionLimit === "function") {
+    if (typeof props.connectionlimit === "function") {
       const node = nodeInternals.get(nodeId);
       if (!node) return true;
       const connectedEdges = getConnectedEdges([node], edges);
-      return props.connectionLimit({ node, connectedEdges });
+      return props.connectionlimit({ node, connectedEdges });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodeInternals, edges, nodeId, props.connectionLimit]);
+  }, [nodeInternals, edges, nodeId, props.connectionlimit]);
 
   const checkValidConnection = (connection: Connection): boolean => {
     if (!props.accepted) return true;

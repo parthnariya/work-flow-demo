@@ -16,6 +16,6 @@ export type FilterBlockData = {
   condition: null | string;
   column: null | { value: string; label: string }[];
   selectedColumn: null | string;
-  datasource?: FileData;
-  fileData?: FileData;
+  datasource: FileData | null;
+  fileData: FileData | null;
 };

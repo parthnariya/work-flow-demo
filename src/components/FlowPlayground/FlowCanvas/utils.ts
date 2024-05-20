@@ -9,10 +9,7 @@ export const miniMapStyle: CSSProperties = {
   width: 150,
 };
 
-export const nodeTypes: Record<
-  OperationNodes,
-  ({ id }: { id: string }) => JSX.Element
-> = {
+export const nodeTypes: Record<OperationNodes, any> = {
   FILE_NODE: FileNode,
   FILTER_NODE: FilterNode,
 };

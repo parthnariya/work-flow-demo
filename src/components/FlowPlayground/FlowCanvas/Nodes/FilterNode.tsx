@@ -3,9 +3,10 @@ import { Button, Input, Select } from "../../../../ui";
 import { FilterBlockData, OperationNodes } from "../../../../utils/types";
 import { CustomConnect } from "../CustomConnect";
 import { NodeWrapper } from "../NodeWrapper";
-import { filterOption } from "../../../../utils/filterOption";
+import { filterFunction, filterOption } from "../../../../utils/filterOption";
 import { useAppDispatch } from "../../../../store";
 import { updateFilter } from "../../../../store/workFlowSlice";
+import { ElementRef, MouseEventHandler, useRef, useState } from "react";
 
 type PropsType = {
   id: string;
@@ -13,12 +14,39 @@ type PropsType = {
 };
 
 export const FilterNode = ({ id, data }: PropsType) => {
-  console.log(id);
-
   const dispatch = useAppDispatch();
 
+  const inputRef = useRef<ElementRef<"input">>(null);
+
+  const [loading, setLoading] = useState(false);
   const onChangeHandler = (key: keyof FilterBlockData, value: string) => {
     dispatch(updateFilter({ id, data: { ...data, [key]: value } }));
+  };
+
+  const onFilterClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    if (
+      !data ||
+      loading ||
+      !inputRef.current ||
+      !data.datasource ||
+      !data.selectedColumn ||
+      !data.condition
+    )
+      return;
+    setLoading(true);
+
+    const filteredFileData = filterFunction(
+      data.datasource,
+      data.selectedColumn,
+      data.condition,
+      inputRef.current.value
+    );
+    console.log(filteredFileData);
+    dispatch(
+      updateFilter({ id, data: { ...data, fileData: filteredFileData } })
+    );
+    setLoading(false);
   };
 
   return (
@@ -26,13 +54,19 @@ export const FilterNode = ({ id, data }: PropsType) => {
       <div className="flex flex-col gap-2">
         <Select
           label="Column name:"
+          key={"column"}
           options={data.column ? data.column : []}
           onChange={(e) => onChangeHandler("selectedColumn", e.target.value)}
-          value={data.selectedColumn ? data.selectedColumn : ""}
+          // value={data.selectedColumn ? data.selectedColumn : ""}
         />
-        <Select label="Condition:" options={filterOption} />
-        <Input />
-        <Button label="Run" />
+        <Select
+          label="Condition:"
+          options={filterOption}
+          key={"condition"}
+          onChange={(e) => onChangeHandler("condition", e.target.value)}
+        />
+        <Input ref={inputRef} />
+        <Button label="Run" onClick={onFilterClick} />
       </div>
       <CustomConnect type="source" position={Position.Right} id={id} />
       <CustomConnect
@@ -41,7 +75,7 @@ export const FilterNode = ({ id, data }: PropsType) => {
           OperationNodes.FILE_NODE,
           OperationNodes.EXAMPLE_NODE,
         ]}
-        connectionLimit={1}
+        connectionlimit={1}
         type="target"
         position={Position.Left}
         id={id}

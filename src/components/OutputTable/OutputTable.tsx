@@ -11,11 +11,7 @@ export const OutputTable = () => {
 
   useOnSelectionChange({
     onChange: ({ nodes }) => {
-      if (nodes[0].data.fileData) {
-        dispatch(setFileData(nodes[0].data.fileData));
-      } else {
-        dispatch(setFileData(null));
-      }
+      dispatch(setFileData(nodes[0]?.data.fileData));
     },
   });
 
