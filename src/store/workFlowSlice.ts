@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { addEdge, applyNodeChanges } from "reactflow";
 import { FilterBlockData, OperationNodes } from "../utils/types";
 import {
   AddFileDataPayloadType,
@@ -9,7 +10,6 @@ import {
   UpdateFilterPayloadType,
   WorkFlowState,
 } from "./types";
-import { addEdge, applyNodeChanges } from "reactflow";
 
 const initialState: WorkFlowState = {
   edges: [],
@@ -22,7 +22,6 @@ const workFlowSlice = createSlice({
   initialState,
   reducers: {
     setFileData: (state, { payload }: PayloadAction<FileData | null>) => {
-      console.log(payload);
       state.fileData = payload;
     },
     addNode: (state, { payload }: PayloadAction<AddNodePayloadType>) => {
@@ -112,6 +111,39 @@ const workFlowSlice = createSlice({
 
           const updatedNodes = state.nodes.map((node) =>
             node.id === connectedNode.id
+              ? {
+                  ...node,
+                  data: {
+                    column: columnsOptions,
+                    selectedColumn: columnsOptions.length
+                      ? columnsOptions[0].value
+                      : null,
+                    condition: null,
+                    datasource: dataset,
+                    fileData: null,
+                  },
+                }
+              : node
+          );
+          state.nodes = updatedNodes;
+        }
+      } else if (sourceNode.type === OperationNodes.FILTER_NODE) {
+        const targetNode = state.nodes.find(
+          (node) => node.id === connection.target
+        );
+        if (!targetNode) return;
+        if (targetNode.type === OperationNodes.FILTER_NODE) {
+          const dataset = sourceNode.data.fileData;
+          if (!dataset) return;
+          console.log(dataset);
+          const columns = Object.keys(dataset.length ? dataset[0] : []);
+          const columnsOptions = columns.map((column) => ({
+            value: column,
+            label: column,
+          }));
+
+          const updatedNodes = state.nodes.map((node) =>
+            node.id === targetNode.id
               ? {
                   ...node,
                   data: {

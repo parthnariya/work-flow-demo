@@ -30,3 +30,7 @@ export type UpdateFilterPayloadType = {
 export type OnConnectPayloadType = {
   connection: Connection;
 };
+
+export type DeleteNodePayloadType = {
+  id: string;
+};

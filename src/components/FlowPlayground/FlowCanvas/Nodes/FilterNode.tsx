@@ -35,7 +35,7 @@ export const FilterNode = ({ id, data }: PropsType) => {
     )
       return;
     setLoading(true);
-
+    console.log(data);
     const filteredFileData = filterFunction(
       data.datasource,
       data.selectedColumn,

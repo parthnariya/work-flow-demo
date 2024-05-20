@@ -14,11 +14,11 @@ export const filterOption = [
     label: "text is not exactly",
   },
   {
-    value: "2",
+    value: "3",
     label: "text includes",
   },
   {
-    value: "3",
+    value: "4",
     label: "text does not includes",
   },
 ];
@@ -47,6 +47,7 @@ export const filterFunction = (
       result = fileData.filter((column) =>
         String(column[selectedColumn]).includes(value)
       );
+      console.log({result});
       break;
 
     case "4":
@@ -55,6 +56,5 @@ export const filterFunction = (
       );
       break;
   }
-  console.log(result);
   return result;
 };
