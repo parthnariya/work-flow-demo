@@ -50,7 +50,7 @@ export const FilterNode = ({ id, data }: PropsType) => {
   };
 
   return (
-    <NodeWrapper label="Filter" type={OperationNodes.FILTER_NODE}>
+    <NodeWrapper id={id} label="Filter" type={OperationNodes.FILTER_NODE}>
       <div className="flex flex-col gap-2">
         <Select
           label="Column name:"
