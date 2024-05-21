@@ -47,7 +47,6 @@ export const filterFunction = (
       result = fileData.filter((column) =>
         String(column[selectedColumn]).includes(value)
       );
-      console.log({result});
       break;
 
     case "4":

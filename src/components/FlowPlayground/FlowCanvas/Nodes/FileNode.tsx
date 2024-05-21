@@ -9,10 +9,9 @@ import { NodeWrapper } from "../NodeWrapper";
 
 type PropsType = {
   id: string;
-  data: any;
 };
 
-export const FileNode = ({ id, data }: PropsType) => {
+export const FileNode = ({ id }: PropsType) => {
   const fileInputRef = useRef<ElementRef<"input">>(null);
   const detailsRef = useRef<ElementRef<"div">>(null);
 
@@ -36,7 +35,6 @@ export const FileNode = ({ id, data }: PropsType) => {
 
         if (file.type === "text/csv") {
           obj = csvToJson(String(data));
-          console.log(obj);
           dispatch(addFileData({ id, fileData: obj }));
           if (detailsRef.current) {
             detailsRef.current.innerHTML =

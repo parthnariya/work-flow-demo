@@ -143,7 +143,6 @@ const workFlowSlice = createSlice({
         if (targetNode.type === OperationNodes.FILTER_NODE) {
           const dataset = sourceNode.data.fileData;
           if (!dataset) return;
-          console.log(dataset);
           const columns = Object.keys(dataset.length ? dataset[0] : []);
           const columnsOptions = columns.map((column) => ({
             value: column,

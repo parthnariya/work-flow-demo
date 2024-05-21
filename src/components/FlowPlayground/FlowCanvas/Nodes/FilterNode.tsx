@@ -35,14 +35,12 @@ export const FilterNode = ({ id, data }: PropsType) => {
     )
       return;
     setLoading(true);
-    console.log(data);
     const filteredFileData = filterFunction(
       data.datasource,
       data.selectedColumn,
       data.condition,
       inputRef.current.value
     );
-    console.log(filteredFileData);
     dispatch(
       updateFilter({ id, data: { ...data, fileData: filteredFileData } })
     );

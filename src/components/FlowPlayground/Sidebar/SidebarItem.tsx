@@ -20,7 +20,6 @@ export const SidebarItem = ({ item }: PropType) => {
         dispatch(addNode({ type: OperationNodes.FILTER_NODE }));
         break;
       case OperationFunctions.ADD_EXAMPLE_DATA:
-        console.log("here");
         dispatch(
           addNode({ type: OperationNodes.EXAMPLE_NODE, fileData: exampleData })
         );
