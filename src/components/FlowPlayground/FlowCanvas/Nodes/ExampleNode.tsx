@@ -1,19 +1,39 @@
+import { Position } from "reactflow";
 import { OperationNodes } from "../../../../utils/types";
+import { CustomConnect } from "../CustomConnect";
 import { NodeWrapper } from "../NodeWrapper";
+import { FileData } from "../../../../store/types";
 
-export const ExampleNode = () => {
+type PropsType = {
+  id: string;
+  data: {
+    fileData: FileData;
+  };
+};
+
+export const ExampleNode = ({ id, data }: PropsType) => {
   return (
-    <NodeWrapper label="File" type={OperationNodes.FILE_NODE}>
-      <div className="flex flex-col items-center justify-center p-1 w-fit">
-        <div className="flex justify-center items-center">
-          <div>Drop file here or</div>
-          <button className="bg-white bg-opacity-55 outline-none outline-offset-2 border-none ml-2 p-1">
-            Open file dialog
-          </button>
-        </div>
-        <div className="mt-1 text-white text-opacity-80 text-[8px]">
-          Allowed types: csv
-        </div>
+    <NodeWrapper
+      id={id}
+      label="Example Data"
+      type={OperationNodes.EXAMPLE_NODE}
+    >
+      <div className="flex flex-col items-center justify-center p-1 min-w-28">
+        <div className="text-start">Example Data</div>
+      </div>
+      <CustomConnect
+        position={Position.Right}
+        type="source"
+        accepted={[OperationNodes.FILTER_NODE]}
+        id={id}
+      />
+      <div
+        // ref={detailsRef}
+        className="absolute text-[8px] z-10 mt-3 text-white text-opacity-50"
+      >
+        {`[DATASET] ${data.fileData.length} rows | ${
+          Object.keys(data.fileData[0]).length
+        } columns`}
       </div>
     </NodeWrapper>
   );

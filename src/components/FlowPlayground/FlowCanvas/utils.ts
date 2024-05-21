@@ -3,6 +3,7 @@ import { OperationNodes } from "../../../utils/types";
 import { FileNode } from "./Nodes/FileNode";
 import { Edge, ReactFlowState } from "reactflow";
 import { FilterNode } from "./Nodes/FilterNode";
+import { ExampleNode } from "./Nodes/ExampleNode";
 
 export const miniMapStyle: CSSProperties = {
   height: 100,
@@ -12,6 +13,7 @@ export const miniMapStyle: CSSProperties = {
 export const nodeTypes: Record<OperationNodes, any> = {
   FILE_NODE: FileNode,
   FILTER_NODE: FilterNode,
+  EXAMPLE_NODE: ExampleNode,
 };
 
 export const selectorFunction = (selector: ReactFlowState) => ({

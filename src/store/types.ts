@@ -11,6 +11,7 @@ export type WorkFlowState = {
 
 export type AddNodePayloadType = {
   type: OperationNodes;
+  fileData?: FileData;
 };
 
 export type AddFileDataPayloadType = {

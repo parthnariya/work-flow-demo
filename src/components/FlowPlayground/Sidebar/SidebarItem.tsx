@@ -1,5 +1,6 @@
 import { useAppDispatch } from "../../../store";
 import { addNode } from "../../../store/workFlowSlice";
+import { exampleData } from "../../../utils/exampleData";
 import { OperationFunctions, OperationNodes } from "../../../utils/types";
 import { SidebarMenuType } from "./type";
 
@@ -17,6 +18,12 @@ export const SidebarItem = ({ item }: PropType) => {
         break;
       case OperationFunctions.ADD_FILTER:
         dispatch(addNode({ type: OperationNodes.FILTER_NODE }));
+        break;
+      case OperationFunctions.ADD_EXAMPLE_DATA:
+        console.log("here");
+        dispatch(
+          addNode({ type: OperationNodes.EXAMPLE_NODE, fileData: exampleData })
+        );
         break;
     }
   };

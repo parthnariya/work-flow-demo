@@ -42,6 +42,11 @@ const workFlowSlice = createSlice({
             fileData: null,
           };
           break;
+        case OperationNodes.EXAMPLE_NODE:
+          data = {
+            fileData: payload.fileData,
+          };
+          break;
       }
       state.nodes = [...state.nodes, { id, position, data, type }];
     },
@@ -96,7 +101,10 @@ const workFlowSlice = createSlice({
 
       if (!sourceNode) return;
 
-      if (sourceNode.type === OperationNodes.FILE_NODE) {
+      if (
+        sourceNode.type === OperationNodes.FILE_NODE ||
+        sourceNode.type === OperationNodes.EXAMPLE_NODE
+      ) {
         const connectedNode = state.nodes.find(
           (node) => node.id === connection.target
         );
