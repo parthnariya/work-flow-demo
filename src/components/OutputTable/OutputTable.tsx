@@ -25,7 +25,7 @@ export const OutputTable = () => {
   const headers = Object.keys(fileData[0]);
 
   return (
-    <div className="border-t flex flex-col text-xs border-primary-dark max-h-[300px]">
+    <div className="border-t flex flex-col text-xs border-primary-dark max-h-[300px] overflow-y-auto">
       <table className="text-sm text-left rtl:text-right text-white text-opacity-80">
         <TableHeader headers={headers} />
         <tbody>
