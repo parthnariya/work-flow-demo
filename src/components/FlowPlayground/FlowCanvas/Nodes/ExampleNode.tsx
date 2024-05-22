@@ -24,7 +24,7 @@ export const ExampleNode = ({ id, data }: PropsType) => {
       <CustomConnect
         position={Position.Right}
         type="source"
-        accepted={[OperationNodes.FILTER_NODE]}
+        accepted={[OperationNodes.FILTER_NODE,OperationNodes.SORT_NODE]}
         id={id}
       />
       <div

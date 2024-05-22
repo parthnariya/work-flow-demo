@@ -25,7 +25,6 @@ export const CustomConnect = (props: PropTypes) => {
 
   const nodeId = useNodeId()!;
   const nodes = useNodes();
-
   const isHandleConnectable = useMemo(() => {
     if (typeof props.connectionlimit === "number") {
       const node = nodeInternals.get(nodeId);
@@ -52,7 +51,6 @@ export const CustomConnect = (props: PropTypes) => {
 
   const checkValidConnection = (connection: Connection): boolean => {
     if (!props.accepted) return true;
-
     const targetNode = nodes.find((node) =>
       (
         props.type === "source"

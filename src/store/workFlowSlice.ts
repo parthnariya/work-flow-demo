@@ -13,6 +13,7 @@ import {
   OnConnectPayloadType,
   OnNodeChangePayloadType,
   UpdateFilterPayloadType,
+  UpdateSortPayloadType,
   WorkFlowState,
 } from "./types";
 
@@ -204,7 +205,7 @@ const workFlowSlice = createSlice({
           );
           state.nodes = updatedNodes;
         }
-        if (targetNode.type === OperationNodes.FILTER_NODE) {
+        if (targetNode.type === OperationNodes.SORT_NODE) {
           const dataset = sourceNode.data.fileData;
           if (!dataset) return;
           const columns = Object.keys(dataset.length ? dataset[0] : []);
@@ -235,6 +236,22 @@ const workFlowSlice = createSlice({
       const updatedEdges = addEdge(connection, state.edges);
       state.edges = updatedEdges;
     },
+    updateSort: (state, { payload }: PayloadAction<UpdateSortPayloadType>) => {
+      const { data, id } = payload;
+      const targetNode = state.nodes.find((node) => node.id === id);
+
+      if (!targetNode || targetNode.type !== OperationNodes.SORT_NODE) {
+        return;
+      }
+
+      const updatedNodes = state.nodes.map((node) =>
+        node.id === id ? { ...node, data } : node
+      );
+      state.nodes = updatedNodes;
+      if (payload.data.fileData) {
+        state.fileData = payload.data.fileData;
+      }
+    },
   },
 });
 
@@ -245,5 +262,6 @@ export const {
   onNodeChange,
   updateFilter,
   onConnect,
+  updateSort,
 } = workFlowSlice.actions;
 export default workFlowSlice.reducer;

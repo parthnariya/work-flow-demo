@@ -1,5 +1,5 @@
 import { Connection, Edge, Node, NodeChange } from "reactflow";
-import { FilterBlockData, OperationNodes } from "../utils/types";
+import { FilterBlockData, OperationNodes, SortBlockData } from "../utils/types";
 
 export type FileData = Record<string, string>[];
 
@@ -34,4 +34,9 @@ export type OnConnectPayloadType = {
 
 export type DeleteNodePayloadType = {
   id: string;
+};
+
+export type UpdateSortPayloadType = {
+  id: string;
+  data: SortBlockData;
 };
