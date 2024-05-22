@@ -1,6 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { addEdge, applyNodeChanges } from "reactflow";
-import { FilterBlockData, OperationNodes } from "../utils/types";
+import {
+  FilterBlockData,
+  OperationNodes,
+  SortBlockData,
+  SortType,
+} from "../utils/types";
 import {
   AddFileDataPayloadType,
   AddNodePayloadType,
@@ -47,6 +52,12 @@ const workFlowSlice = createSlice({
             fileData: payload.fileData,
           };
           break;
+        case OperationNodes.SORT_NODE:
+          data = <SortBlockData>{
+            column: null,
+            sortType: SortType.ASC,
+            fileData: null,
+          };
       }
       state.nodes = [...state.nodes, { id, position, data, type }];
     },
@@ -135,6 +146,32 @@ const workFlowSlice = createSlice({
           );
           state.nodes = updatedNodes;
         }
+        if (connectedNode.type === OperationNodes.SORT_NODE) {
+          const dataset = sourceNode.data.fileData || [];
+          const columns = Object.keys(dataset.length ? dataset[0] : []);
+          const columnsOptions = columns.map((column) => ({
+            value: column,
+            label: column,
+          }));
+
+          const updatedNodes = state.nodes.map((node) =>
+            node.id === connectedNode.id
+              ? {
+                  ...node,
+                  data: {
+                    column: columnsOptions,
+                    selectedColumn: columnsOptions.length
+                      ? columnsOptions[0].value
+                      : null,
+                    sortType: SortType.ASC,
+                    datasource: dataset,
+                    fileData: null,
+                  },
+                }
+              : node
+          );
+          state.nodes = updatedNodes;
+        }
       } else if (sourceNode.type === OperationNodes.FILTER_NODE) {
         const targetNode = state.nodes.find(
           (node) => node.id === connection.target
@@ -159,6 +196,33 @@ const workFlowSlice = createSlice({
                       ? columnsOptions[0].value
                       : null,
                     condition: null,
+                    datasource: dataset,
+                    fileData: null,
+                  },
+                }
+              : node
+          );
+          state.nodes = updatedNodes;
+        }
+        if (targetNode.type === OperationNodes.FILTER_NODE) {
+          const dataset = sourceNode.data.fileData;
+          if (!dataset) return;
+          const columns = Object.keys(dataset.length ? dataset[0] : []);
+          const columnsOptions = columns.map((column) => ({
+            value: column,
+            label: column,
+          }));
+
+          const updatedNodes = state.nodes.map((node) =>
+            node.id === targetNode.id
+              ? {
+                  ...node,
+                  data: {
+                    column: columnsOptions,
+                    selectedColumn: columnsOptions.length
+                      ? columnsOptions[0].value
+                      : null,
+                    sortType: SortType.ASC,
                     datasource: dataset,
                     fileData: null,
                   },

@@ -24,6 +24,9 @@ export const SidebarItem = ({ item }: PropType) => {
           addNode({ type: OperationNodes.EXAMPLE_NODE, fileData: exampleData })
         );
         break;
+      case OperationFunctions.ADD_SORT:
+        dispatch(addNode({ type: OperationNodes.SORT_NODE }));
+        break;
     }
   };
   return (

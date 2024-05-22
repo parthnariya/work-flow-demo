@@ -7,7 +7,7 @@ type PropsType = React.SelectHTMLAttributes<HTMLSelectElement> & {
 };
 export const Select = (props: PropsType) => {
   return (
-    <div>
+    <div className={props.className}>
       <label className="block mb-2 text-xs font-medium text-gray-900">
         {props.label}
       </label>

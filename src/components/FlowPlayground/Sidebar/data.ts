@@ -31,6 +31,13 @@ export const sidebarMenuItems: SidebarMenuType[] = [
         input: "Dataset",
         output: "Dataset",
       },
+      {
+        label: "Sort",
+        detail: "Sort data ",
+        functionName: OperationFunctions.ADD_SORT,
+        input: "Dataset",
+        output: "Dataset",
+      },
     ],
   },
 ];
