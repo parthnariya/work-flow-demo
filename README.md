@@ -1,30 +1,59 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Workflow builder
 
-Currently, two official plugins are available:
+## Requirements
+- Node version >= v18.17.0
+- Yarn version >= 1.22.22
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Run Locally
 
-## Expanding the ESLint configuration
+Here is the steps to run project locally
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Clone the project
+```bash
+  git clone https://github.com/parthnariya/work-flow-demo.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Go to the project directory
+
+```bash
+  cd work-flow-demo
+```
+
+Install dependencies
+
+```bash
+  yarn
+```
+
+Start the server
+
+```bash
+  yarn run dev
+```
+
+
+## Tech Stack
+
+**Development:** Reactjs with Typescript, ReactFlow
+
+**State Management:** Redux, Redux-toolkit
+
+**Styling:** Tailwind
+
+
+## Features
+
+**Data Import and Filtering:**
+
+- **CSV Upload:** Accepts comma-separated values (CSV) files for data processing.
+- **Flexible Filtering:** Provides multiple filtering options to refine the data
+    - "text is exactly": Filters rows where a specific text appears exactly in the chosen column.
+    - "text is not exactly": Excludes rows containing the specified text in the chosen column.
+    - "text includes": Retains rows with text containing a particular phrase or word in the selected column.
+    - "text does not includes": Removes rows where text in the designated column includes a certain phrase or word.
+
+- **Sorting Capability:** Allows you to organize the filtered data in a specific order based on a chosen column.
+
+- **CSV Export:** Enables you to save the filtered and sorted data back into a CSV file for further use or sharing.
+- **Example Data:** provided some example data to play around the project.
