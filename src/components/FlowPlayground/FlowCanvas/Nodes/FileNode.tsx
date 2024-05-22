@@ -1,4 +1,4 @@
-import { ChangeEventHandler, ElementRef, useRef } from "react";
+import { ChangeEventHandler, ElementRef, memo, useRef } from "react";
 import { Position } from "reactflow";
 import { useAppDispatch } from "../../../../store";
 import { addFileData } from "../../../../store/workFlowSlice";
@@ -11,7 +11,7 @@ type PropsType = {
   id: string;
 };
 
-export const FileNode = ({ id }: PropsType) => {
+const FileNodeUnMemoized = ({ id }: PropsType) => {
   const fileInputRef = useRef<ElementRef<"input">>(null);
   const detailsRef = useRef<ElementRef<"div">>(null);
 
@@ -95,3 +95,6 @@ export const FileNode = ({ id }: PropsType) => {
     </NodeWrapper>
   );
 };
+
+const FileNode = memo(FileNodeUnMemoized);
+export default FileNode;

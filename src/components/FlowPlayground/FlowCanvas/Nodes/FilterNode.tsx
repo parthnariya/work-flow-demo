@@ -6,17 +6,18 @@ import { NodeWrapper } from "../NodeWrapper";
 import { filterFunction, filterOption } from "../../../../utils/filterOption";
 import { useAppDispatch } from "../../../../store";
 import { updateFilter } from "../../../../store/workFlowSlice";
-import { ElementRef, MouseEventHandler, useRef, useState } from "react";
+import { ElementRef, MouseEventHandler, memo, useRef, useState } from "react";
 
 type PropsType = {
   id: string;
   data: FilterBlockData;
 };
 
-export const FilterNode = ({ id, data }: PropsType) => {
+const FilterNodeUnMemoized = ({ id, data }: PropsType) => {
   const dispatch = useAppDispatch();
 
   const inputRef = useRef<ElementRef<"input">>(null);
+  const detailsRef = useRef<ElementRef<"div">>(null);
 
   const [loading, setLoading] = useState(false);
   const onChangeHandler = (key: keyof FilterBlockData, value: string) => {
@@ -44,6 +45,14 @@ export const FilterNode = ({ id, data }: PropsType) => {
     dispatch(
       updateFilter({ id, data: { ...data, fileData: filteredFileData } })
     );
+    if (detailsRef.current) {
+      detailsRef.current.innerHTML =
+        filteredFileData.length > 0
+          ? ""
+          : `[DATASET] ${filteredFileData.length} rows | ${
+              Object.keys(filteredFileData[0]).length
+            } columns`;
+    }
     setLoading(false);
   };
 
@@ -85,3 +94,5 @@ export const FilterNode = ({ id, data }: PropsType) => {
     </NodeWrapper>
   );
 };
+const FilterNode = memo(FilterNodeUnMemoized);
+export default FilterNode;

@@ -9,7 +9,7 @@ import { CustomConnect } from "../CustomConnect";
 import { NodeWrapper } from "../NodeWrapper";
 import { useAppDispatch } from "../../../../store";
 import { updateSort } from "../../../../store/workFlowSlice";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, memo, useState } from "react";
 import { sortFunction } from "../../../../utils/sortOption";
 
 type PropsType = {
@@ -17,7 +17,7 @@ type PropsType = {
   data: SortBlockData;
 };
 
-export const SortNode = ({ id, data }: PropsType) => {
+const SortNodeUnMemoized = ({ id, data }: PropsType) => {
   const [checkedOption, setCheckedOption] = useState(data.sortType);
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -108,3 +108,6 @@ export const SortNode = ({ id, data }: PropsType) => {
     </NodeWrapper>
   );
 };
+
+const SortNode = memo(SortNodeUnMemoized);
+export default SortNode;

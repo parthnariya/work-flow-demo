@@ -3,6 +3,7 @@ import { OperationNodes } from "../../../../utils/types";
 import { CustomConnect } from "../CustomConnect";
 import { NodeWrapper } from "../NodeWrapper";
 import { FileData } from "../../../../store/types";
+import { memo } from "react";
 
 type PropsType = {
   id: string;
@@ -10,8 +11,7 @@ type PropsType = {
     fileData: FileData;
   };
 };
-
-export const ExampleNode = ({ id, data }: PropsType) => {
+const ExampleNodeUnMemoized = ({ id, data }: PropsType) => {
   return (
     <NodeWrapper
       id={id}
@@ -24,7 +24,7 @@ export const ExampleNode = ({ id, data }: PropsType) => {
       <CustomConnect
         position={Position.Right}
         type="source"
-        accepted={[OperationNodes.FILTER_NODE,OperationNodes.SORT_NODE]}
+        accepted={[OperationNodes.FILTER_NODE, OperationNodes.SORT_NODE]}
         id={id}
       />
       <div
@@ -38,3 +38,6 @@ export const ExampleNode = ({ id, data }: PropsType) => {
     </NodeWrapper>
   );
 };
+
+const ExampleNode = memo(ExampleNodeUnMemoized);
+export default ExampleNode;
